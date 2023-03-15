@@ -35,9 +35,9 @@ public class CONST {
     public static final String ERROR_MSG_MOVE_COMMAND = "Invaild command, only accept one of { u, d, l, r }, try again...";
     public static final String ERROR_MSG_FORMAT = "Invaild format, try again...";
     public static final String ERROR_MSG_NOT_AVAILABLE_SPOT = "Position not available. Try again!";
-    public static final String ERROR_MSG_READ_FILE = "Couldn't read file %s";
     public static final String ERROR_MSG_DIRECTION = "Invalid direction.";
     public static final String ERROR_MSG_MOVE_TO_WALL = "Cannot move over a wall.";
+    public static final String ERROR_MSG_FILERESOURCE = "FileResource: error encountered reading ";
     
     // Messages 
     public static final String SPOT_AVAILABLE = "User input accepted.";

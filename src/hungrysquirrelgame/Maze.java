@@ -1,10 +1,9 @@
 package hungrysquirrelgame;
 
 
+import hungrysquirrelgame.exception.ResourceException;
 import hungrysquirrelgame.helpers.CONST;
-import java.io.File;
-import java.io.IOException;
-import java.util.Scanner;
+import hungrysquirrelgame.helpers.FileResource;
 
 
 /**
@@ -15,46 +14,41 @@ public class Maze {
 
     public static Entity[][] maze = new Entity[CONST.MAX_MAZE_ROW][CONST.MAX_MAZE_COLUMN];
     
-    
-    public static void create(String filename) throws IOException {
+    public static void create(String filename) {
+        FileResource fr = new FileResource(filename);
+        String initMazes = fr.asString();
         
-        // read file: Maze.txt
+        if (initMazes.isEmpty()) 
+            throw new ResourceException(CONST.ERROR_MSG_FILERESOURCE + filename);
+            
+        String[] mazes = initMazes.split("\n");
+
+        int row = 0;
         
-        try {
-            String path = String.format("%s/%s", System.getProperty("user.dir"), filename);
+        // 20 
+        while(row < mazes.length) {
+            // 50 
+            String line = mazes[row];
+            if (mazes.length != 20 || line.length() != 50) 
+                throw new ResourceException(CONST.ERROR_MSG_FILERESOURCE + filename);
+        
             
-            File file = new File(path);
-            Scanner in = new Scanner(file); 
-            
-            int row = 0;
-            
-            
-            while(in.hasNextLine() && row < CONST.MAX_MAZE_ROW) {
-                String line = in.nextLine();
-                
-                for (int c = 0; c < CONST.MAX_MAZE_COLUMN; c++) {
-                    if (line.charAt(c) == '*') {
-                        var w = new Wall(row, c);
-                        maze[row][c] = w;
-                        
-                        w.create();
-                        
-                    } else maze[row][c] = null;
+            for (int c = 0; c < line.length(); c++) {
+                if (line.charAt(c) == '*') {
+                    // build the wall
+                    Wall wall = new Wall(row, c);
+                    wall.create();
+                    
+                    maze[row][c] = wall;
+                } else {
+                    maze[row][c] = null;
                 }
-                row++;
             }
+            row++;
             
-            in.close();
-            
-        } catch (IOException e) {
-            
-            throw new IOException(String.format(
-                    CONST.ERROR_MSG_READ_FILE, 
-                    e.getMessage())
-            ); 
         }
-                
     }
+    
     
     public static void display() {
 
